@@ -26,18 +26,9 @@ ul, li, ol {
 .sortable-list li {
   padding: 8px 12px;
   border: 1px dashed #ddd;
+  user-select: none;
   transition: all 0.2s linear 0s;
 }
 .sortable-list li:hover {
-  cursor: grab;
+  cursor: row-resize;
 }
-.sortable-list li.grabbing {
-  cursor: grabbing;
-}
-.sortable-list li.up {
-  transform: translate(0, -40px);
-}
-.sortable-list li.down {
-  transform: translate(0, 40px);
-}
-
