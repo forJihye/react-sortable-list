@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+ul, li, ol {
+  list-style: none;
+}
+
+#root {
+  padding: 50px;
+  background: #f8f8f8;
+}
+
+.sortable-list {
+  margin-top: 20px;
+}
+
+.sortable-list li {
+  padding: 8px 12px;
+  border: 1px dashed #ddd;
+  transition: all 0.2s linear 0s;
+}
+.sortable-list li:hover {
+  cursor: grab;
+}
+.sortable-list li.grabbing {
+  cursor: grabbing;
+}
+.sortable-list li.up {
+  transform: translate(0, -40px);
+}
+.sortable-list li.down {
+  transform: translate(0, 40px);
+}
+
