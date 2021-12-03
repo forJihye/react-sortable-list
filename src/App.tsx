@@ -1,4 +1,5 @@
 import Basic from "./example/basic";
+import PreviewSort from "./example/previewSort";
 import Transform from "./example/transform";
 
 const App = () => {
@@ -11,6 +12,10 @@ const App = () => {
     <article style={{margin: '20px 0'}}>
       <h3>2. Transform</h3>
       <Transform />
+    </article>
+    <article style={{margin: '20px 0'}}>
+      <h3>3. Preview Sort</h3>
+      <PreviewSort />
     </article>
   </div>
 }

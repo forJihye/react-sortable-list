@@ -87,7 +87,6 @@ const Transform = () => {
     })
   }
 
-
   return <>
     <ul ref={ref} className='sortable-list' onDragOver={onDragOver}>
       {list.map(({id, name}, i) => {

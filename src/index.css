@@ -27,7 +27,6 @@ ul, li, ol {
   padding: 8px 12px;
   border: 1px dashed #ddd;
   user-select: none;
-  transition: transform 0.2s linear 0s;
 }
 .sortable-list li:hover {
   cursor: row-resize;
