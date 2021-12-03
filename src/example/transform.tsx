@@ -19,10 +19,12 @@ const Transform = () => {
   const [itemSize, setItemSize] = useState(Array.from({length: data.length}));
   
   const [isChosen, setIsChosen] = useState<boolean>(false);
-  const [store, setStore] = useState<any>({
+  const [store, setStore] = useState<{target: null|HTMLElement; index: null|number; list: Item[]; moveUp: number[]; moveDown: number[]}>({
     target: null,
     index: null,
-    list: []
+    list: [],
+    moveUp: [],
+    moveDown: []
   });
   
   useEffect(() => {
@@ -41,8 +43,7 @@ const Transform = () => {
   const onDragStart = (ev: DragEvent<HTMLElement>) => {
     setIsChosen(true);
     const target = ev.target as HTMLElement;
-    target.style.cursor = 'row-resize';
-    target.style.visibility = 'hidden';
+    target.style.opacity = '0';
     
     ev.dataTransfer.effectAllowed = 'move';
     ev.dataTransfer.setData('text/html', target as any);
@@ -56,24 +57,49 @@ const Transform = () => {
     const from = Number(store.index); // 드래그 시작 위치
     const to = Number(target.dataset.index); // 드래그 종료 위치
     
+    const moveUp = [...store.moveUp];
+    const moveDown = [...store.moveDown];
+    if (from < to) {
+      moveUp.includes(to) ? moveUp.pop() : moveUp.push(to);
+    } else if (from > to) {
+      moveDown.includes(to) ? moveDown.pop() : moveDown.push(to);
+    } else {
+      moveUp.length = 0;
+      moveDown.length = 0;
+    }
     const updating = [...list];
     updating[from] = updating.splice(to, 1, updating[from])[0];
-    
-    setStore({...store, target, list: updating});
+    // setList(updating);
+    setStore({...store, target, list: updating, moveUp, moveDown});
   }
-  
-  const onDragEnd = (ev: DragEvent<HTMLElement>) => {
-    const target = ev.target as HTMLElement;
-    target.style.cursor = 'row-resize';
 
+  const onDragEnd = (ev: DragEvent<HTMLElement>) => {
+    setIsChosen(false);
+    const target = ev.target as HTMLElement;
+    target.style.opacity = '1';
     setList(store.list);
+    setStore({
+      target: null,
+      index: null,
+      list: [],
+      moveUp: [],
+      moveDown: [],
+    })
   }
+
 
   return <>
     <ul ref={ref} className='sortable-list' onDragOver={onDragOver}>
       {list.map(({id, name}, i) => {
+        const upping = store.moveUp.includes(i);
+        const downing = store.moveDown.includes(i);
+        let transform = '';
+        if (upping) transform = `translateY(-${itemSize[i]}px)`;
+        else if (downing) transform = `translateY(${itemSize[i]}px)`;
+        else transform = `translateY(0)`;
+
         return <li key={`item-${i}`} 
-          style={{height: itemSize[i]+'px'}}
+          style={{height: itemSize[i]+'px', transform}}
           data-index={i}
           draggable='true'
 
@@ -83,6 +109,9 @@ const Transform = () => {
         >{name}</li>
       })}
     </ul>
+    <br />
+    <div style={{fontSize: 13}}>Move Up Index: {store.moveUp.join()}</div>
+    <div style={{fontSize: 13}}>Move Down Index: {store.moveDown.join()}</div>
   </>
 }
 
